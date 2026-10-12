@@ -10,7 +10,7 @@ int main(){
     char livro[100];
     char autor[100];
     int isbn;
-    int estoque[3];  //vetor???
+    int estoque[3] = {0};  //vetor???
     float preco;
     int resposta;
     int local;
