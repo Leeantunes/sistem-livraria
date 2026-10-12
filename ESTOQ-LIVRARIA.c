@@ -7,8 +7,8 @@ int main(){
     setlocale(LC_ALL, "Portuguese");  //atua com locale.h
 
     //criar variaveis pros livros
-    char livro[100];
-    char autor[100];
+    char livro[200];
+    char autor[200];
     int isbn;
     int estoque[3] = {0};  //vetor???
     float preco;
@@ -93,14 +93,13 @@ int main(){
 
     // fazer menu da livraria
 
-    while (resposta <= 5){
+    while (resposta <= 4){
 
     printf("\n ===== PONTO & VÍRGULA EDITORA E LIVRARIA SISTEMA DE ESTOQUE ===== \n");
     printf("\n1 - Cadastrar entrada de livros\n"
         "2 - Consultar estoque\n"
         "3 - Registrar saída/venda\n"
-        "4 - Consultar estoque por local\n"
-        "5 - Sair\n");
+        "4 - Sair\n");
 
     printf("\nEscolha o número correspondente ao qual você deseja acessar: ");
     scanf("%i", &resposta);
@@ -121,9 +120,9 @@ int main(){
 
                 printf("Insira o nome do livro: ");
                 //leia tudo, exceto o Enter.
-                scanf(" %99[^\n]", &livro);
+                scanf(" %199[^\n]", &livro);
                 printf("Insira o nome do autor: ");
-                scanf(" %99[^\n]", &autor);
+                scanf(" %199[^\n]", &autor);
                 printf("Insira o ISBN do livro: ");
                 scanf("%i", &isbn);
                 printf("Insira a quantidade de livros que irá entrar para o estoque: ");
@@ -150,9 +149,9 @@ int main(){
 
                 printf("Insira o nome do livro: ");
                 //leia tudo, exceto o Enter.
-                scanf(" %99[^\n]", &livro);
+                scanf(" %199[^\n]", &livro);
                 printf("Insira o nome do autor: ");
-                scanf(" %99[^\n]", &autor);
+                scanf(" %199[^\n]", &autor);
                 printf("Insira o ISBN do livro: ");
                 scanf("%i", &isbn);
                 printf("Insira a quantidade de livros que irá entrar para o estoque online: ");
@@ -179,9 +178,9 @@ int main(){
 
                 printf("Insira o nome do livro: ");
                 //leia tudo, exceto o Enter.
-                scanf(" %99[^\n]", &livro);
+                scanf(" %199[^\n]", &livro);
                 printf("Insira o nome do autor: ");
-                scanf(" %99[^\n]", &autor);
+                scanf(" %199[^\n]", &autor);
                 printf("Insira o ISBN do livro: ");
                 scanf("%i", &isbn);
                 printf("Insira a quantidade de livros que irá entrar para o estoque central: ");
@@ -236,9 +235,12 @@ int main(){
             }
         }
         //---------------------------------------------
-        else if (resposta == 5){
+        else if (resposta == 4){
             printf("\nVoltando a tela inicial..\n");
 
+        }
+        else {
+            printf("Opção inválida.\n");
         }
     }
 
