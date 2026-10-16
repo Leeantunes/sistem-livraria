@@ -134,99 +134,58 @@ int main(){
             printf("Escolha o número da opção desejada: ");
             scanf("%d", &local);
 
-            if (local == 1){
-                printf("\n ===ESTOQUE LOJA FÍSICA=== \n");
+            //se local for maior ou igual a 1 OU menor ou igual a 3 faça:
+            if (local >= 1 && local <= 3) {
+                    printf("\nInsira o nome do livro: ");
+                    scanf(" %199[^\n]", livro[indiceAtual]);
 
-                printf("Insira o nome do livro: ");
-                //leia tudo, exceto o Enter.
-                scanf(" %199[^\n]s", &livro[indiceAtual]);
-                printf("Insira o nome do autor: ");
-                scanf(" %199[^\n]s", &autor[indiceAtual]);
-                printf("Insira o ISBN-13 do livro: ");
-                scanf("%50s", &isbn[indiceAtual]);
-                printf("Insira a quantidade de livros que irá entrar para o estoque: ");
-                scanf("%i", &estoque[indiceAtual][0]);
+                    printf("Insira o nome do autor: ");
+                    scanf(" %199[^\n]", autor[indiceAtual]);
 
-                printf("Insira o preço do livro: ");
-                scanf("%f", &preco[indiceAtual]);
+                    printf("Insira o ISBN-13 do livro: ");
+                    scanf("%49s", isbn[indiceAtual]);
 
-                totalLivros[0] = totalLivros[0] + estoque[indiceAtual][0];
+                    printf("Insira a quantidade de livros: ");
+                    scanf("%d", &quantidade);
 
-                //string pois vamos usar mais que uma letra
-                printf("\n--------------------------------------------------------------------------");
-                printf("\nLivro cadastrado: %s\n", livro[indiceAtual]);
-                //printf("\nLivro cadastrado no ID [%i]: %s\n", indiceAtual, livro[indiceAtual]);
-                printf("Autor do livro cadastrado: %s\n", autor[indiceAtual]);
-                printf("ISBN-13 do livro cadastrado: %50s\n", isbn[indiceAtual]);
-                printf("Quantidade de livro cadastrado que irá entrar no estoque físico: %i\n", estoque[indiceAtual][0]);
-                printf("Preço do livro cadastrado: %.2f\n", preco[indiceAtual]);
-                printf("Total de livros físicos que foi cadastrado no nome de \"%s\" é de %i livros\n", livro[indiceAtual], totalLivros[0]);
-                printf("--------------------------------------------------------------------------\n");
-                indiceAtual++;
+                    printf("Insira o preco do livro: ");
+                    scanf("%f", &preco[indiceAtual]);
 
+                    posicaoLivro = -1; // nao sabemos se o livr ja foi cadastrado ou não
+
+                    //percorre os livros que ja estao cadastrados pra ver se o cadastro ja existe ou nao
+                    for (int i = 0; i < indiceAtual; i++) {
+                            if (strcmp(isbn[i], isbn[indiceAtual]) == 0) {
+                            posicaoLivro = i;
+                            break;
+                            }
+                        }
+
+            if (quantidade <= 0) {
+                    printf("\nQuantidade invalida!\n");
             }
-            else if (local==2){
-                printf("\n ===ESTOQUE LOJA ONLINE=== \n");
+            //se posicaolivro for diferente a -1 significa q livro foi encontrado
+            else if (posicaoLivro != -1) {
+                estoque[posicaoLivro][local - 1] += quantidade;
+                totalLivros[local - 1] += quantidade;
 
-                printf("Insira o nome do livro: ");
-                //leia tudo, exceto o Enter.
-                scanf(" %199[^\n]s", &livro[indiceAtual]);
-                printf("Insira o nome do autor: ");
-                scanf(" %199[^\n]s", &autor[indiceAtual]);
-                printf("Insira o ISBN-13 do livro: ");
-                scanf("%50s", &isbn[indiceAtual]);
-                printf("Insira a quantidade de livros que irá entrar para o estoque online: ");
-                scanf("%i", &estoque[indiceAtual][1]);
+                printf("\nLivro ja cadastrado!\n");
+                printf("Estoque atualizado: %d livros\n",
+                       estoque[posicaoLivro][local - 1]);
+            }else {
+                //diz que o livro n foi encontrado e vai ser cadastrado
+                estoque[indiceAtual][local - 1] = quantidade;
+                totalLivros[local - 1] += quantidade;
 
-                printf("Insira o preço do livro: ");
-                scanf("%f", &preco[indiceAtual]);
+                printf("\nLivro cadastrado com sucesso!\n");
+                printf("\nLivro: %s\n", livro[indiceAtual]);
+                printf("Estoque: %d livros\n",
 
-                totalLivros[1] = totalLivros[1] + estoque[indiceAtual][1];
+                       estoque[indiceAtual][local - 1]);
 
-                //string pois vamos usar mais que uma letra
-                printf("\n--------------------------------------------------------------------------");
-                //printf("\nLivro cadastrado: %s\n", livro);
-                printf("\nLivro cadastrado no ID [%i]: %s\n", indiceAtual, livro[indiceAtual]);
-                printf("Autor do livro cadastrado: %s\n", autor[indiceAtual]);
-                printf("ISBN-13 do livro cadastrado: %50s\n", isbn[indiceAtual]);
-                printf("Quantidade de livro cadastrado que irá entrar no estoque online: %i\n", estoque[indiceAtual][1]);
-                printf("Preço do livro cadastrado: %.2f\n", preco[indiceAtual]);
-                printf("Total de livros online que foi cadastrado no nome de \"%s\" é de %i livros\n", livro[indiceAtual], totalLivros[1]);
-                printf("--------------------------------------------------------------------------\n");
                 indiceAtual++;
-
             }
-            else if (local==3){
-                printf("\n ===ESTOQUE LOJA CENTRAL=== \n");
-
-                printf("Insira o nome do livro: ");
-                //leia tudo, exceto o Enter.
-                scanf(" %199[^\n]s", &livro[indiceAtual]);
-                printf("Insira o nome do autor: ");
-                scanf(" %199[^\n]s", &autor[indiceAtual]);
-                printf("Insira o ISBN-13 do livro: ");
-                scanf("%50s", &isbn[indiceAtual]);
-                printf("Insira a quantidade de livros que irá entrar para o estoque central: ");
-                scanf("%i", &estoque[indiceAtual][2]);
-
-                printf("Insira o preço do livro: ");
-                scanf("%f", &preco[indiceAtual]);
-
-                totalLivros[2] = totalLivros[2] + estoque[indiceAtual][2];
-
-                //string pois vamos usar mais que uma letra
-                printf("\n--------------------------------------------------------------------------");
-                //printf("\nLivro cadastrado: %s\n", livro);
-                printf("\nLivro cadastrado no ID [%i]: %s\n", indiceAtual, livro[indiceAtual]);
-                printf("Autor do livro cadastrado: %s\n", autor[indiceAtual]);
-                printf("ISBN-13 do livro cadastrado: %50s\n", isbn[indiceAtual]);
-                printf("Quantidade de livro cadastrado que irá entrar no estoque central: %i\n", estoque[indiceAtual][2]);
-                printf("Preço do livro cadastrado: %.2f\n", preco[indiceAtual]);
-                printf("Total de livros no estoque central que foi cadastrado no nome de \"%s\" é de %i livros\n", livro[indiceAtual], totalLivros[2]);
-                printf("--------------------------------------------------------------------------\n");
-                indiceAtual++;
-
-            }
+        }
             else {
                 printf("\nVoltando a tela inicial..\n");
             }
@@ -239,11 +198,14 @@ int main(){
             scanf(" %49[^\n]", isbnDigitado);
 
             // Procurar o livro cadastrado pelo ISBN
+            //verifica se tem o livro, começa com -1 pq ainda n encontramos o livro, n sabemos se ele existe
             posicaoLivro = -1;
 
-            for (int i = 0; i < indiceAtual; i++) {
-                if (strcmp(isbn[i], isbnDigitado) == 0) {
-                    posicaoLivro = i;
+            for (int posicaoISBN = 0; posicaoISBN < indiceAtual; posicaoISBN++) {
+
+                //isbn q ja existe com isbn que acabou de ser digitado
+                if (strcmp(isbn[posicaoISBN], isbnDigitado) == 0) {
+                    posicaoLivro = posicaoISBN;
                     break;
                 }
                 }
@@ -262,6 +224,7 @@ int main(){
                 printf("Opcao: ");
                 scanf("%d", &local);
 
+                // menor que 1 OU maior que 3. inválido.
                 if (local < 1 || local > 3) {
                 printf("\nLocal invalido!\n");
                 }
@@ -270,13 +233,16 @@ int main(){
                 printf("Quantidade de livros que chegaram: ");
                 scanf("%d", &quantidade);
 
+                //menor que 0? errado
                 if (quantidade <= 0) {
                 printf("\nQuantidade invalida!\n");
             }
             else {
-                // Adicionar ao estoque existente
+                // adicionar ao estoque existente
+                //atualiza a quantidade de um livro específico naquele local
                 estoque[posicaoLivro][local - 1] += quantidade;
 
+                //atualiza a quantidade total
                 totalLivros[local - 1] += quantidade;
 
                 printf("\nEntrada registrada com sucesso!\n");
@@ -297,38 +263,53 @@ int main(){
                    "Escolha o número da opção desejada: ");
             scanf("%i", &respostaSaida);
 
-            contaRetirada[0] = totalLivros[0] - totalAposRetirada[0];
+            if (respostaSaida >= 1 && respostaSaida <= 3) {
+                    printf("\nInsira o ISBN-13 do livro que deseja retirar: ");
+                    scanf(" %49[^\n]", isbnDigitado);
 
-            if (respostaSaida==1){
+                    posicaoLivro = -1;
 
-                printf("\nInsira o nome do livro que se deseja retirar: ");
-                scanf(" %199[^\n]s", livro);
-                printf("Quantos livros \"%s\" você deseja retira do estoque?: ", livro);
-                scanf("%i", totalAposRetirada[0]);
-
-                printf("Total de livros fisícos após retirada do estoque é de %i\n", contaRetirada[0]);
+            for (int i = 0; i < indiceAtual; i++) {
+                    if (strcmp(isbn[i], isbnDigitado) == 0) {
+                    posicaoLivro = i;
+                    break;
+                }
             }
-            else if (respostaSaida==2){
+            if (posicaoLivro == -1) {
+                    printf("\nLivro não encontrado!\n");
+                }
+            else{
+                printf("Livro encontrado: %s\n", livro[posicaoLivro]);
+                printf("Quantos livros deseja retirar do estoque?: ");
+                scanf("%i", &quantidade);
+            int local = respostaSaida - 1;
 
-                contaRetirada[1] = totalLivros[1] - totalAposRetirada[1];
-
-                printf("\nInsira o nome do livro que se deseja retirar: ");
-                scanf(" %199[^\n]s", livro);
-                printf("Quantos livros \"%s\" você deseja retira do estoque?: ", livro);
-                scanf("%i", totalAposRetirada[1]);
-
-                printf("Total de livros online após retirada do estoque é de %i\n", contaRetirada[1]);
+            if (quantidade <= 0) {
+                printf("\nQuantidade inválida!\n");
             }
-            else if(respostaSaida==3){
-                contaRetirada[2] = totalLivros[2] - totalAposRetirada[2];
+            else if (quantidade > estoque[posicaoLivro][local]) {
+                printf("\nEstoque insuficiente!\n");
 
-                printf("\nInsira o nome do livro que se deseja retirar: ");
-                scanf(" %199[^\n]s", livro);
-                printf("Quantos livros \"%s\" você deseja retira do estoque?: ", livro);
-                scanf("%i", totalAposRetirada[2]);
-
-                printf("Total de livros centrais após retirada do estoque é de %i\n", contaRetirada[2]);
             }
+            else {
+                contaRetirada[local] = quantidade;
+
+                estoque[posicaoLivro][local] =
+                    estoque[posicaoLivro][local] - quantidade;
+
+                totalLivros[local] =
+                    totalLivros[local] - quantidade;
+
+                printf("\nSaída registrada com sucesso!\n");
+                printf("Quantidade retirada: %i\n", contaRetirada[local]);
+                printf("Estoque restante deste livro: %i\n",
+                       estoque[posicaoLivro][local]);
+
+                printf("Total de livros neste local: %i\n",
+                       totalLivros[local]);
+                }
+            }
+        }
             else if (respostaSaida==4){
                 printf("\nVoltando à tela inicial...\n");
             }
@@ -338,6 +319,7 @@ int main(){
         }
         //---------------------------------------------
         else if (resposta==4){
+            printf("\nConsultar estoque\n");
             printf("\n1 - Estoque físico\n"
                    "2 - Estoque online\n"
                    "3 - Estoque central\n"
@@ -378,7 +360,7 @@ int main(){
 
             for (int posicaoLivro = 0; posicaoLivro < indiceAtual; posicaoLivro++) {
 
-                    printf("\nLivro: %s", livro[posicaoLivro]);
+                    printf("\nLivro: %s\n", livro[posicaoLivro]);
                     printf("Estoque Físico: %i livros\n", estoque[posicaoLivro][0]);
                     printf("Estoque Online: %i livros\n", estoque[posicaoLivro][1]);
                     printf("Estoque Central: %i livros\n", estoque[posicaoLivro][2]);
@@ -387,7 +369,7 @@ int main(){
                       + estoque[posicaoLivro][1]
                       + estoque[posicaoLivro][2]; // percorrer todos os estoques
 
-            printf("Total Geral: %i livros", total);
+            printf("Total Geral: %i livros\n", total);
                 }
             }
             else if (resposta2 == 5) {
