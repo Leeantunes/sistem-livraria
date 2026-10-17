@@ -129,7 +129,7 @@ int main(){
             printf("\nOnde o livro será cadastrado?\n");
             printf("1 - Loja física\n"
             "2 - Loja online\n"
-            "3 - Loja central\n"
+            "3 - Estoque central\n"
             "4 - Sair\n");
             printf("Escolha o número da opção desejada: ");
             scanf("%d", &local);
@@ -220,7 +220,7 @@ int main(){
                 printf("\nEscolha o local de entrada:\n");
                 printf("1 - Loja fisica\n");
                 printf("2 - Loja online\n");
-                printf("3 - Loja central\n");
+                printf("3 - Estoque central\n");
                 printf("Opcao: ");
                 scanf("%d", &local);
 
@@ -242,7 +242,7 @@ int main(){
                 //atualiza a quantidade de um livro específico naquele local
                 estoque[posicaoLivro][local - 1] += quantidade;
 
-                //atualiza a quantidade total
+                //atualiza a quantidade total no local
                 totalLivros[local - 1] += quantidade;
 
                 printf("\nEntrada registrada com sucesso!\n");
