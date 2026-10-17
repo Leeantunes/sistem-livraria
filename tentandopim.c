@@ -106,12 +106,12 @@ int main(){
 
     // fazer menu da livraria
 
-    while (resposta <= 4){
+    while (resposta <= 5){
 
     printf("\n ===== PONTO & VÍRGULA EDITORA E LIVRARIA SISTEMA DE ESTOQUE ===== \n");
     printf("\n1 - Cadastrar entrada de livros\n"
-        "2 - Registrar entrada de estoque\n"
-        "3 - Registrar saída/venda\n"
+        "2 - Registrar entrada de livros\n"
+        "3 - Registrar saída/vendas de livros\n"
         "4 - Consultar estoque\n"
         "5 - Sair\n");
 
