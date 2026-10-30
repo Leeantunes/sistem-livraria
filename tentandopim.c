@@ -4,6 +4,81 @@
 
 #define MAX_LIVROS 50 // numero maximo de livros q o sistema pode guardar
 
+//grava todos os livros no arquivo
+void salvarEstoque(int indiceAtual, char livro[MAX_LIVROS][200], char autor[MAX_LIVROS][200], char isbn[MAX_LIVROS][50],
+                   int estoque[MAX_LIVROS][3], float preco[MAX_LIVROS]){
+                       setlocale(LC_ALL, "Portuguese");
+
+                    FILE *arq = fopen("estoque.txt", "w"); //escrever
+                    if (arq==NULL){
+                        printf("Erro ao salvar o arquivo\n");
+                        return;
+                    }
+                    for (int i=0; i<=indiceAtual; i++){
+                        fprintf(arq, "%s;%s;%s;%d;%d;%d;%.2f\n",
+                                livro[i], autor[i], isbn[i],
+                                estoque[i][0], estoque[i][1], estoque[i][2],
+                                preco[i]);
+                }
+                fclose(arq);
+        }
+//pra quando abrir o codigo dnv mostrar as informaçoes dnv
+int carregarEstoque(char livro[][200], char autor[][200],
+                    char isbn[][50], int estoque[][3], float preco[]) {
+
+    FILE *arq = fopen("estoque.txt", "r"); // "r" = ler
+    if (arq == NULL) {
+        return 0; // arquivo ainda nao existe (primeira vez), comeca vazio
+    }
+
+    int indiceAtual = 0;
+
+    // o fscanf devolve 7 quando leu os 7 campos com sucesso
+    while (indiceAtual < MAX_LIVROS &&
+           fscanf(arq, " %199[^;];%199[^;];%49[^;];%d;%d;%d;%f",
+                  livro[indiceAtual], autor[indiceAtual], isbn[indiceAtual],
+                  &estoque[indiceAtual][0], &estoque[indiceAtual][1], &estoque[indiceAtual][2],
+                  &preco[indiceAtual])) {
+        indiceAtual++;
+    }
+
+    fclose(arq);
+    return indiceAtual;
+}
+
+        //salvar logins
+void salvarLogin(char usuarioCadastro[50],  char senhaCadastro[50]){
+    setlocale(LC_ALL, "Portuguese");
+
+                 FILE *arq = fopen("usuarios.txt", "w");
+                 if (arq==NULL){
+                        printf("Erro ao salvar o arquivo\n");
+                        return;
+                    }
+                fprintf(arq, "%s %s\n", usuarioCadastro, senhaCadastro);
+                fclose(arq);
+            }
+//carregar logins salvos
+int carregarLogin(char usuarioCadastro[50], char senhaCadastro[50]) {
+
+    FILE *arq = fopen("usuarios.txt", "r");
+
+    if (arq == NULL) {
+        return 0; // ainda nao existe nenhum usuario cadastrado
+    }
+
+    int resultado = fscanf(arq, "%49s %49s", usuarioCadastro, senhaCadastro);
+
+    fclose(arq);
+
+    if (resultado == 2) {
+        return 1; // usuario e senha foram carregados
+    }
+
+    return 0;
+}
+
+//---------------------------------------------------------------------------------------
 int main(){
 
     setlocale(LC_ALL, "Portuguese");  //atua com locale.h
@@ -21,7 +96,6 @@ int main(){
     int resposta = 0;
     int local;
     int totalLivros[3] = {0};
-    int totalAposRetirada[3] = {0};
     int contaRetirada[3] = {0};
 
     int resposta2;
@@ -42,7 +116,11 @@ int main(){
     //usar while pros menu de login
     int loginCerto = 0;
 
+    //carrega o estoque do arquivo
+    indiceAtual = carregarEstoque(livro, autor, isbn, estoque, preco);
+
     //LOGIN
+    int usuarioCadastrado = carregarLogin(usuarioCadastro, senhaCadastro);
     while (loginCerto == 0){
 
         printf("\n===========================================\n");
@@ -60,6 +138,11 @@ int main(){
             printf("Insira a sua nova senha: ");
             scanf("%50s", &senhaCadastro);
 
+            //salva o usuario e a senha no arquivo
+            salvarLogin(usuarioCadastro, senhaCadastro);
+
+            usuarioCadastrado = 1;
+
             printf("Cadastrado! \n");
 
             printf("\n--Faça seu login agora--\n");
@@ -74,6 +157,7 @@ int main(){
                 printf("\nConcluido! Prosseguindo..\n");
                 //informa ao while que o login foi concluído
                 loginCerto = 1;
+                salvarLogin(usuarioCadastro, senhaCadastro);
             } else {
                 printf("\nUsuário ou senha incorreta!\n");
 
@@ -93,6 +177,7 @@ int main(){
                 printf("\nLogin realizado com sucesso!\n");
                 //informa ao while que o login foi concluído
                 loginCerto = 1;
+
         }
 
             else{
@@ -105,7 +190,6 @@ int main(){
     }
 
     // fazer menu da livraria
-
     while (resposta <= 5){
 
     printf("\n ===== PONTO & VÍRGULA EDITORA E LIVRARIA SISTEMA DE ESTOQUE ===== \n");
@@ -151,7 +235,7 @@ int main(){
                     printf("Insira o preco do livro: ");
                     scanf("%f", &preco[indiceAtual]);
 
-                    posicaoLivro = -1; // nao sabemos se o livr ja foi cadastrado ou não
+                    posicaoLivro = -1; // nao sabemos se o livro ja foi cadastrado ou não
 
                     //percorre os livros que ja estao cadastrados pra ver se o cadastro ja existe ou nao
                     for (int i = 0; i < indiceAtual; i++) {
@@ -172,6 +256,11 @@ int main(){
                 printf("\nLivro ja cadastrado!\n");
                 printf("Estoque atualizado: %d livros\n",
                        estoque[posicaoLivro][local - 1]);
+
+
+                salvarEstoque(indiceAtual, livro, autor, isbn,
+                              estoque, preco);
+
             }else {
                 //diz que o livro n foi encontrado e vai ser cadastrado
                 estoque[indiceAtual][local - 1] = quantidade;
@@ -184,6 +273,9 @@ int main(){
                        estoque[indiceAtual][local - 1]);
 
                 indiceAtual++;
+                salvarEstoque(indiceAtual, livro, autor, isbn,
+                              estoque, preco);
+
             }
         }
             else {
@@ -208,7 +300,7 @@ int main(){
                     posicaoLivro = posicaoISBN;
                     break;
                 }
-                }
+            }
 
                 // Verificar se o livro existe
                 if (posicaoLivro == -1) {
@@ -249,6 +341,9 @@ int main(){
                 printf("Livro: %s\n", livro[posicaoLivro]);
                 printf("Estoque atualizado: %d livros\n",
                        estoque[posicaoLivro][local - 1]);
+
+                salvarEstoque(indiceAtual, livro, autor, isbn,
+                              estoque, preco);
                     }
                 }
             }
@@ -307,6 +402,9 @@ int main(){
 
                 printf("Total de livros neste local: %i\n",
                        totalLivros[local]);
+
+                salvarEstoque(indiceAtual, livro, autor, isbn,
+                              estoque, preco);
                 }
             }
         }
@@ -370,6 +468,10 @@ int main(){
                       + estoque[posicaoLivro][2]; // percorrer todos os estoques
 
             printf("Total Geral: %i livros\n", total);
+
+
+            salvarEstoque(indiceAtual, livro, autor, isbn,
+                              estoque, preco);
                 }
             }
             else if (resposta2 == 5) {
